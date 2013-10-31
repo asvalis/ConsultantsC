@@ -1,0 +1,308 @@
+
+<div style="padding-top: 90px;" class="jumbotron">
+
+    <h1>Day In The Life</h1>
+    <p>This is a page about the day in the life of guatemala</p>
+    <p><a class="btn btn-primary btn-lg">Interactive Map</a></p>
+
+</div>
+
+
+    <!-- START THE FEATURETTES -->
+    <div class="container">
+
+    <div class="featurette">
+        <img class="featurette-image circular pull-right" src="assets/g1.png">
+        <h2 class="featurette-heading">  <span class="text-muted">It'll blow your mind.</span></h2>
+        <p class="lead">Pitchfork cred selvage kogi Portland, Truffaut Wes Anderson lo-fi polaroid ethnic slow-carb tofu meggings hoodie put a bird on it. Ethnic bespoke photo booth, Carles gluten-free actually roof party keytar XOXO semiotics. </p>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <div style="padding-bottom: 70px" class="featurette">
+        <img class="featurette-image circular pull-left" src="assets/car1.JPG">
+        <h2 class="featurette-heading">Tattooed American Apparel. <span class="text-muted">Lightweight.</span></h2>
+        <p class="lead">Pitchfork cred selvage kogi Portland, Truffaut Wes Anderson lo-fi polaroid ethnic slow-carb tofu meggings hoodie put a bird on it. Ethnic bespoke photo booth, Carles gluten-free actually roof party keytar XOXO semiotics. .</p>
+    </div>
+    </div>
+
+<!DOCTYPE html>
+<html>
+<head>
+<!--  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true"></script>   -->
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places,geometry"></script>
+
+<style>
+    #panel {
+
+        /*
+        position: relative;
+        clear:both ;
+        top: 5px;
+        left: 50%;
+        margin-left: -60px;
+        */
+        position:absolute;
+        /*margin: 0 auto 0 auto;*/
+        left:37%;
+        z-index: 5;
+
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+    }
+
+    #output
+    {
+        position:absolute;
+
+    }
+
+    #googleMap
+    {
+        padding-bottom: 40px;
+        width:100%;
+        height:400px;
+        margin: 0 auto 0 auto;
+    }
+</style>
+
+
+<script>
+
+    var geocoder;
+    var map;
+    var infowindow;
+    var distanceRange = new Array();
+    var directionsDisplay;
+    var directionsService;
+    var stepDisplay;
+    var markerArray = [];
+    var start;
+    var end;
+    var hasCentered=0;
+
+    function initialize()
+    {
+        geocoder = new google.maps.Geocoder();
+        start = new google.maps.LatLng(33.69578,-78.907349);
+
+        //adding for directions
+        directionsService = new google.maps.DirectionsService();
+        var testlocation = "33.69578,-78.907349"
+        var mapProp =
+        {
+            center:start,
+            //center:new google.maps.LatLng(14.623451,-90.533051),
+            zoom:15,
+            mapTypeId:google.maps.MapTypeId.TERRAIN
+        };
+        map =new google.maps.Map(document.getElementById("googleMap"),mapProp);
+        document.getElementById("route").disabled = true;
+
+    }
+
+    function codeAddress()
+    {
+        var address = document.getElementById('address').value;
+        geocoder.geocode( { 'address': address}, function(results, status)
+        {
+
+            //in this function, reset start to new location
+            if (status == google.maps.GeocoderStatus.OK)
+            {
+                start = results[0].geometry.location;
+                map.setCenter(results[0].geometry.location);
+                hasCentered=1;
+                document.getElementById("route").disabled = false;
+                /*var marker = new google.maps.Marker({
+                 map: map,
+                 position: results[0].geometry.location
+                 });
+                 */
+                // Reset distanceRange array to null after every center.
+                for (var i = 0; i < distanceRange.length; i++)
+                {
+                    distanceRange[i].dis=0;
+                }
+
+
+                var request = {
+                    location: start,
+                    radius: 3300,
+                    types: ['convenience_store']
+                };
+                infowindow = new google.maps.InfoWindow();
+                var service = new google.maps.places.PlacesService(map);
+                service.nearbySearch(request, callback);
+                var rendererOptions = {
+                    map: map
+                }
+                directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions)
+                // Instantiate an info window to hold step text.
+                stepDisplay = new google.maps.InfoWindow();
+            }
+            else
+            {
+                alert('Geocode was not successful for the following reason: ' + status);
+            }
+        });
+    }
+
+
+
+
+
+    function callback(results, status) {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+
+
+            for (var i = 0; i < results.length; i++)
+            {
+                //createMarker(results[i]);
+                var placeLoc = results[i].geometry.location;
+                //var poi = new google.maps.LatLng(-33.8665433, 151.1956316);
+                var poi = start;
+                var distance =  google.maps.geometry.spherical.computeDistanceBetween(placeLoc, poi);
+                var miles = distance*0.000621371;
+                distanceRange[i]={sel:i, dis:miles,  n:results[i].name , loc:results[i].geometry.location};
+
+            }
+
+            sortArray();
+
+        }
+    }
+
+
+
+
+    function sortArray()
+    {
+        //takes Array and sorts from closest to furtherst and we then find farthest away which is last object
+        //in sorted array
+        distanceRange.sort(function(obj1, obj2) {return obj1.dis - obj2.dis;});
+
+    }
+
+    function calcRoute() {
+        // First, remove any existing markers from the map.
+        for (var i = 0; i < markerArray.length; i++) {
+            markerArray[i].setMap(null);
+        }
+
+        // Now, clear the array itself.
+        markerArray = [];
+
+        // Retrieve the start and end locations and create
+        // a DirectionsRequest using WALKING directions.
+
+        //var start = document.getElementById('start').value;
+        //var end = document.getElementById('end').value;
+        var end = distanceRange[distanceRange.length-1].loc;
+
+        //alert(end);
+        var request = {
+            origin: start,
+            destination: end,
+            travelMode: google.maps.TravelMode.WALKING
+        };
+
+        // Route the directions and pass the response to a
+        // function to create markers for each step.
+        directionsService.route(request, function(response, status)
+        {
+            if (status == google.maps.DirectionsStatus.OK)
+            {
+                directionsDisplay.setDirections(response);
+                showSteps(response);
+            }
+        });
+    }
+
+    function showSteps(directionResult) {
+
+        // For each step,caluclate the time and add to total time
+        var myRoute = directionResult.routes[0].legs[0];
+        var totalTime=0;
+        var hrs=0;
+        var mins=0;
+
+
+        //loops through each step... DO NOT NEED TO HAVE THE MARKERS
+        for (var i = 0; i < myRoute.steps.length; i++) {
+            /*Commenting out part where we put marker for each turn.
+
+             var marker = new google.maps.Marker({
+             position: myRoute.steps[i].start_point,
+             map: map
+             });
+
+             */
+
+            //This is where we calculate the total time it takes in seconds
+            //Then need to convert to minutes and or hours depending on distance
+            totalTime = totalTime+myRoute.steps[i].duration.value
+            //alert(totalTime);
+
+        }
+        //alert(totalTime);
+        totalTime = Math.round(totalTime/60);
+        //method for converting to hours and minutes if necessary
+        while(totalTime>60)
+        {
+            hrs++;
+            totalTime=totalTime-60;
+        }
+        //alert("Total time is " +hrs+ " hours and " +totalTime + " minutes from A to B");
+        //document.write("<p> It would take you on average " + totalTime " to walk to " + distanceRange[distanceRange.length-1].n ". That's how far Guatamalans have to walk everyday just to get clean water!! Think about that!</p>");
+
+        var x=document.getElementById("output");  // Find the element
+        if(hrs>0)
+        {
+            x.innerHTML="It would take you on average <b>" +hrs+ " hours and " +totalTime + " minutes </b> to walk from where you are to " + distanceRange[distanceRange.length-1].n + ". That's just a walk to your local convenience store, but Guatemalans have to walk at least far everyday just to get clean water!! Think about that!";    // Change the content
+        }
+        else
+        {
+            x.innerHTML="It would take you on average <b>" +totalTime + " minutes </b> to walk from where you are to " + distanceRange[distanceRange.length-1].n + ".  That's just a walk to your local convenience store, but Guatemalans have to walk at least far everyday just to get clean water!! Think about that!";    // Change the content
+        }
+    }
+
+
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+
+
+
+
+</head>
+
+<body>
+
+<div id="message"></div>
+
+<div id="googleMap"></div><br/>
+<div id="panel">
+    <input id="address" type="textbox" placeholder="Enter Address or Zip">
+    <input id="centerMap" type="button" value="Center Map" onclick="codeAddress()">
+</div>
+<br/><br/><br/>
+<div style="text-align:center;">
+
+
+    <button id="route" align="center" onclick="calcRoute()">Find out how far you would have to walk for your daily essentials</button>
+    <p id="output" align="center"></p>
+</div>
+
+
+<br/>
+<br/>
+<br/>
+<script>
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+<h1> Send a newsletter to all the users </h1>
+
+<%= form_tag :action => 'send_newsletter'  do %>
+    <%= text_field :send_newsletter_field, :send_newsletter %>
+    <%= submit_tag 'Send newsletter', :class=>'btn btn-signin' %>
+<% end %>

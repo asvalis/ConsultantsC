@@ -1,0 +1,145 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"></link>
+    <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        function assignCustomValue() {
+            for( i = 0; i < document.paypal.amount.length; i++ ) {
+                if( document.paypal.amount[i].checked == true ) {
+                    var val = document.paypal.amount[i].value;
+                    if(val=="custom") {
+                        document.paypal.amount[i].value=document.paypal.specified.value;
+                    }
+                }
+            }
+            return true;
+        }
+    </script>
+
+</head>
+
+
+<div style="padding-top: 100px;" class="container">
+    <div class="row">
+        <div class="col-md-5 col-md-offset-1">
+            <h1>Select a donation level</h1>
+        </div>
+    </div>
+
+
+    <form action="https://www.paypal.com/cgi-bin/webscr" name="paypal" class="form-inline" method="post" onSubmit="return assignCustomValue();">
+
+        <!-- Identify your business so that you can collect the payments. -->
+        <input type="hidden" name="business"
+               value="bruce.clemens.aguadelpueblo@gmail.com">
+
+        <!-- Specify a Donate button. -->
+        <input type="hidden" name="cmd" value="_donations">
+
+        <!-- Specify a return URL. -->
+        <input type="hidden" name="return" value="http://www.example.com/return">
+
+        <!-- Specify a cancel return URL. -->
+        <script type="text/javascript">
+            document.write('<input type="hidden" name="cancel_return" value="' + location.href + '">');
+        </script>
+
+        <!-- Specify details about the contribution -->
+        <input type="hidden" name="item_name" value="Peoples' Consultants">
+        <input type="hidden" name="currency_code" value="USD">
+
+
+        <div class="row">
+            <div class="col-md-5 col-md-offset-1">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h1><input type="radio" name="amount" value="10.00"> $10 <span class="glyphicon glyphicon-tint"></span><br />
+                            <small>The equivalent of 10 yards of pipe.</small></h1><br />
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5 col-md-offset-1">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h1><input type="radio" name="amount" value="25.00"> $25 <span class="glyphicon glyphicon-tint"></span><br />
+                            <small>The equivalent of 500 bricks.</small></h1><br />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5 col-md-offset-1">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h1><input type="radio" name="amount" value="50.00"> $50 <span class="glyphicon glyphicon-tint"></span><br />
+                            <small>The equivalent of 200 buckets.</small></h1><br />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5  col-md-offset-1">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h1><input type="radio" name="amount" value="100.00"> $100 <span class="glyphicon glyphicon-tint"></span><br />
+                            <small>The equivalent of...</small></h1><br />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5 col-md-offset-1">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h1><input type="radio" name="amount" value="custom"> Custom amount <span class="glyphicon glyphicon-tint"></h1><br /><input type="text" name="specified" class="form-control" placeholder="Desired amount (USD)">
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="row">
+            <div class="col-md-5 col-md-offset-1">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h1>Donate now <span class="glyphicon glyphicon-tint"></h1>
+
+                        <input type="text" name="pplsfirst" class="form-control" placeholder="First name">
+                        <input type="text" name="pplslast" class="form-control" placeholder="Last name">
+                        <input type="text" name="pplsemail" class="form-control" placeholder="Email address">
+                        <input type="text" name="pplsphone" class="form-control" placeholder="Phone number (optional)"><br /><br />
+
+                        <!-- Display the payment button. -->
+                        <input type="image" name="submit" border="0"
+                               src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif"
+                               alt="PayPal - The safer, easier way to pay online">
+                        <img alt="" border="0" width="1" height="1"
+                             src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" >
+    </form>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+</div>
+
+</html>
