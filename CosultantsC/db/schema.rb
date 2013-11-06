@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131030235809) do
+ActiveRecord::Schema.define(version: 20131008154945) do
 
   create_table "admins", force: true do |t|
     t.string   "admin_name"
@@ -31,6 +31,13 @@ ActiveRecord::Schema.define(version: 20131030235809) do
   end
 
   create_table "images", force: true do |t|
+    t.string   "name"
+    t.string   "url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "pictures", force: true do |t|
     t.string   "picture_file"
     t.string   "file_location"
     t.integer  "admin_id"
@@ -39,24 +46,25 @@ ActiveRecord::Schema.define(version: 20131030235809) do
     t.datetime "updated_at"
   end
 
-  create_table "pictures", force: true do |t|
-    t.string   "image"
+  create_table "texts", force: true do |t|
+    t.string   "text_file"
+    t.string   "file_location"
     t.integer  "admin_id"
     t.string   "last_edited_by"
-    t.integer  "project_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "pictures", ["project_id"], name: "index_pictures_on_project_id", using: :btree
-
-  create_table "projects", force: true do |t|
+  create_table "users", force: true do |t|
+    t.string   "name"
+    t.string   "password"
+    t.boolean  "is_admin"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "videos", force: true do |t|
-    t.string   "video_file"
+    t.string   "picture_file"
     t.string   "file_location"
     t.integer  "admin_id"
     t.string   "last_edited_by"

@@ -3,4 +3,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-CosultantsC::Application.load_tasks
+PeoplesC::Application.load_tasks

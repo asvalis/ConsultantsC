@@ -3,8 +3,8 @@ class Picture < ActiveRecord::Base
   mount_uploader :image, ImageUploader
   attr_accessible :image
 
-  #belongs_to :admin
-  #belongs_to :project
+#  belongs_to :admin
+ # belongs_to :project
 
   #validates :admin_id, presence: true
 

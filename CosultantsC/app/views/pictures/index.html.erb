@@ -1,4 +1,5 @@
-<h1>Listing Pictures</h1>
+<h1 style="padding-top: 100px">Listing Pictures</h1>
+
 
 <table>
   <thead>
@@ -17,7 +18,7 @@
       <tr>
         <td><%= link_to 'Show', picture %></td>
         <td><%= link_to 'Edit', edit_picture_path(picture) %></td>
-        <td><%= link_to 'Destroy', method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Destroy', 'admin', method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="item">
-            <img class="myCarPic" src="../assets/g2.png">
+            <div id="fagoot"><%= image_tag(@picture.image) %></div>
             <div class="container">
                 <div class="carousel-caption">
                     <h1>single-origin coffee pop-up tofu</h1>
@@ -85,7 +85,7 @@
     <hr class="featurette-divider">
 
     <div class="featurette">
-        <img class="featurette-image circular pull-right" src="assets/g1.png">
+        <div class="featurette-image circular pull-right"><%= image_tag(@picture.image) %></div>
         <h2 class="featurette-heading">Tattooed American Apparel. <span class="text-muted">It'll blow your mind.</span></h2>
         <p class="lead">Pitchfork cred selvage kogi Portland, Truffaut Wes Anderson lo-fi polaroid ethnic slow-carb tofu meggings hoodie put a bird on it. Ethnic bespoke photo booth, Carles gluten-free actually roof party keytar XOXO semiotics. </p>
     </div>
@@ -106,6 +106,5 @@
         <p class="lead">Pitchfork cred selvage kogi Portland, Truffaut Wes Anderson lo-fi polaroid ethnic slow-carb tofu meggings hoodie put a bird on it. Ethnic bespoke photo booth, Carles gluten-free actually roof party keytar XOXO semiotics. .</p>
     </div>
 
-  <!-- <div id="fagoot"><#%= image_tag(@picture.image) %></div>
-
+    <div id="fagoot"><%= image_tag(@picture.image) %></div>
     <!-- /END THE FEATURETTES -->

@@ -1,15 +1,14 @@
-CosultantsC::Application.routes.draw do
+PeoplesC::Application.routes.draw do
   resources :pictures
 
-  resources :videos
+  resources :users
 
-  resources :images
-  
 root 'static_pages#index'
 
   get 'about', to: 'static_pages#about'
   get 'experience', to: 'static_pages#experience'
   get 'donate', to: 'static_pages#donate'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

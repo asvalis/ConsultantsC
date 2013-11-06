@@ -9,4 +9,4 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-CosultantsC::Application.config.secret_key_base = '0e007f486c4dda8bf9f415a8d0219614e5c50aaaddb06a3d2492003923897268cabca1655574c250ff307972be2cc5d37ea108acb77163c63f3cf1c000963597'
+PeoplesC::Application.config.secret_key_base = '6c291efaa8c2d9796cc32206d4327f1f15d26e840741ac775d061994fb0c4a89cd34380df807e1a9ee94841771bbefcb027f6e8cf730ca915dc5db4a5d0a2d28'
